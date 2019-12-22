@@ -20,21 +20,24 @@ def execute_Intcode_program(intcode_memspace):
     instruction_ptr = 0
     while instruction_ptr < len(intcode_memspace):
         requested_opcode = intcode_memspace[instruction_ptr]
-        if requested_opcode == opcodes.haltcode:
+        if requested_opcode == instructions.haltcode:
             break
-        req_op = opcodes.lookup(intcode_memspace[instruction_ptr])
-        process_opcode(index=instruction_ptr, intcode_memspace=intcode_memspace)
-        instruction_ptr += req_op.instruction_length
+        req_instruct = instructions.lookup(intcode_memspace[instruction_ptr])
+        process_instruction(instruct=req_instruct,
+                            index=instruction_ptr,
+                            intcode_memspace=intcode_memspace)
+        instruction_ptr += req_instruct.length
 
     return (intcode_memspace)
 
 
-class opcode:
-    def __init__(self, name: str, code: int, instruction_length: int,
-                 operand_count: int, operation: Callable[[int, int], int]):
+class instruction:
+    def __init__(self, name: str, opcode: int, length: int,
+                 operand_count: int,
+                 operation: Callable[[int, int], int]):
         self.name = name
-        self.code = code
-        self.instruction_length = instruction_length
+        self.opcode = opcode
+        self.length = length
         self.operand_count = operand_count
         self.operation = operation
 
@@ -42,31 +45,36 @@ class opcode:
         return self.operation(operands)
 
 
-class opcodes:
-    opcode_list = [
-        opcode('halt', 99, 1, 0, lambda x: x),
-        opcode('add', 1, 4, 2, lambda x: x[0] + x[1]),
-        opcode('multiply', 2, 4, 2, lambda x: x[0] * x[1])
+class instructions:
+    instruction_list = [
+        instruction('halt', 99, 1, 0, lambda x: x),
+        instruction('add', 1, 4, 2, lambda x: x[0] + x[1]),
+        instruction('multiply', 2, 4, 2, lambda x: x[0] * x[1])
     ]
-    opcode_lookup = dict([(opcode.code, opcode) for opcode in opcode_list])
+    opcode_lookup = dict([(instr.opcode, instr) for instr in instruction_list])
     haltcode = 99
 
     @classmethod
-    def lookup(cls, code: int) -> opcode:
+    def lookup(cls, code: int) -> instruction:
         return cls.opcode_lookup[code]
 
 
-def process_opcode(index, intcode_memspace):
-    requested_opcode = intcode_memspace[index]
+def process_instruction(instruct: instruction, index: int, intcode_memspace: List[int]):
+    if type(instruct) is instruction:
+        req_instruct = instruct
+        requested_opcode = req_instruct.opcode
+    else:
+        requested_opcode = intcode_memspace[index]
+        req_instruct = instructions.lookup(requested_opcode)
+
     result_store = intcode_memspace[index + 3]
 
-    req_op = opcodes.lookup(requested_opcode)
     operands = []
-    for i in range(req_op.operand_count):
+    for i in range(req_instruct.operand_count):
         operand = intcode_memspace[intcode_memspace[index + 1 + i]]
         operands.append(operand)
 
-    intcode_memspace[result_store] = req_op.exec(operands)
+    intcode_memspace[result_store] = req_instruct.exec(operands)
 
 
 def get_list_ints_csv(filepath):
