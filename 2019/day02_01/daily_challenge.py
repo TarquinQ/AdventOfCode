@@ -2,35 +2,47 @@
 
 
 def process_inputfile(filepath):
-    list_ints = get_list_ints(filepath)
+    list_ints = get_list_ints_csv(filepath)
+    fix_1202_error(list_ints=list_ints)
+    process_opcode_space(opcode_space=list_ints)
 
-    module_list = []
-    total_fuel = 0
-    for mass in list_ints:
-        fuel_required = calc_fuel_recurse(mass)
-        module_list.append(tuple([mass, fuel_required]))
-        total_fuel += fuel_required
-
-    return (total_fuel, module_list)
+    return list_ints[0]
 
 
-def calc_fuel(mass):
-    return int(mass / 3) - 2
+def fix_1202_error(list_ints):
+    list_ints[1] = 12
+    list_ints[2] = 2
 
 
-def calc_fuel_recurse(mass):
-    fuel = 0
-    mass = int(mass / 3) - 2
-    while mass > 0:
-        fuel += mass
-        mass = int(mass / 3) - 2
-    return fuel
+def process_opcode_space(opcode_space):
+    opcode_halt = 99
+
+    for i in range(0, len(opcode_space), 4):
+        if opcode_space[i] == opcode_halt:
+            break
+        process_opcode(index=i, opcode_space=opcode_space)
+
+    return (opcode_space)
 
 
-def get_list_ints(filepath):
+def process_opcode(index, opcode_space):
+    opcode = opcode_space[index]
+    operand1 = opcode_space[opcode_space[index + 1]]
+    operand2 = opcode_space[opcode_space[index + 2]]
+    result_store = opcode_space[index + 3]
+
+    opcode_addition = 1
+    opcode_multiply = 2
+
+    if (opcode == opcode_addition):
+        opcode_space[result_store] = operand1 + operand2
+    elif (opcode == opcode_multiply):
+        opcode_space[result_store] = operand1 * operand2
+
+
+def get_list_ints_csv(filepath):
     list_ints = []
     with open(filepath) as f:
-        for line in f.readlines():
-            if line:
-                list_ints.append(int(line))
+        line = f.readline()
+        list_ints = [int(x) for x in line.split(',')]
     return list_ints

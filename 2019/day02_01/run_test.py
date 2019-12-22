@@ -7,50 +7,33 @@ import daily_challenge as challenge
 class TestBasic(unittest.TestCase):
     def test_training_data(self):
         given_set = [
-            (12, 2),
-            (14, 2),
-            (1969, 654),
-            (100756, 33583)
+            ([1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50],
+                [3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50]),
+
+            ([1, 0, 0, 0, 99],
+                [2, 0, 0, 0, 99]),
+
+            ([2, 3, 0, 3, 99],
+                [2, 3, 0, 6, 99]),
+
+            ([2, 4, 4, 5, 99, 0],
+                [2, 4, 4, 5, 99, 9801]),
+
+            ([1, 1, 1, 4, 99, 5, 6, 0, 99],
+                [30, 1, 1, 4, 2, 5, 6, 0, 99])
         ]
-        given_values = [x[1] for x in given_set]
-        total_expected = sum(given_values)
 
-        total_actual = 0
         for item in given_set:
-            mass, fuel = item[0], item[1]
-            answer = challenge.calc_fuel(mass)
-            self.assertEqual(fuel, answer)
-            total_actual += answer
-        self.assertEqual(total_actual, total_expected)
-
-    def test_training_data_02(self):
-        given_set = [
-            (12, 2),
-            (14, 2),
-            (1969, 966),
-            (100756, 50346)
-        ]
-        given_values = [x[1] for x in given_set]
-        total_expected = sum(given_values)
-
-        total_actual = 0
-        for item in given_set:
-            mass, fuel = item[0], item[1]
-            answer = challenge.calc_fuel_recurse(mass)
-            print(("Checking known mass,fuel; expected {0}:{1}, got {0}:{2}")
-                  .format(mass, fuel, answer))
-            self.assertEqual(fuel, answer)
-            total_actual += answer
-        self.assertEqual(total_actual, total_expected)
+            pre, post = item[0], item[1]
+            post_new = challenge.process_opcode_space(opcode_space=pre.copy())
+            self.assertEqual(post_new, post)
 
     def test_challenge(self):
         input_filename = "challenge_input.txt"
-        my_answer = 5161601
+        my_answer = 1870666
 
-        results = challenge.process_inputfile(input_filename)
-        total_fuel = results[0]
-        answer = total_fuel
-        self.assertEqual(my_answer, answer)
+        result = challenge.process_inputfile(input_filename)
+        self.assertEqual(my_answer, result)
 
 
 if __name__ == '__main__':
