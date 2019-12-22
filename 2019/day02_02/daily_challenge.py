@@ -3,7 +3,7 @@
 from typing import List, Callable  # also: Dict, Tuple, Sequence
 
 
-def process_inputfile(filepath):
+def process_inputfile(filepath: str) -> int:
     list_ints = get_list_ints_csv(filepath)
     replace_noun_and_verb(list_ints=list_ints, noun=12, verb=2)
     execute_Intcode_program(intcode_memspace=list_ints)
@@ -11,12 +11,24 @@ def process_inputfile(filepath):
     return list_ints[0]
 
 
-def replace_noun_and_verb(list_ints, noun, verb):
+def process_inputfile_findnounverb(filepath: str, target_val: int) -> int:
+    list_ints_orig = get_list_ints_csv(filepath)
+    for noun in range(99):
+        for verb in range(99):
+            list_ints = list_ints_orig.copy()
+            replace_noun_and_verb(list_ints=list_ints, noun=noun, verb=verb)
+            execute_Intcode_program(intcode_memspace=list_ints)
+            if list_ints[0] == target_val:
+                return (noun, verb)
+
+
+
+def replace_noun_and_verb(list_ints: List[int], noun: int, verb: int) -> None:
     list_ints[1] = noun
     list_ints[2] = verb
 
 
-def execute_Intcode_program(intcode_memspace):
+def execute_Intcode_program(intcode_memspace: List[int]) -> List[int]:
     instruction_ptr = 0
     while instruction_ptr < len(intcode_memspace):
         requested_opcode = intcode_memspace[instruction_ptr]
@@ -59,7 +71,7 @@ class instructions:
         return cls.opcode_lookup[code]
 
 
-def process_instruction(instruct: instruction, index: int, intcode_memspace: List[int]):
+def process_instruction(instruct: instruction, index: int, intcode_memspace: List[int]) -> None:
     if type(instruct) is instruction:
         req_instruct = instruct
         requested_opcode = req_instruct.opcode
@@ -77,7 +89,7 @@ def process_instruction(instruct: instruction, index: int, intcode_memspace: Lis
     intcode_memspace[result_store] = req_instruct.exec(operands)
 
 
-def get_list_ints_csv(filepath):
+def get_list_ints_csv(filepath: str) -> List[int]:
     list_ints = []
     with open(filepath) as f:
         line = f.readline()

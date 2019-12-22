@@ -36,6 +36,16 @@ class TestBasic(unittest.TestCase):
         result = challenge.process_inputfile(input_filename)
         self.assertEqual(my_answer, result)
 
+    def test_challenge2(self):
+        input_filename = "challenge_input.txt"
+        my_answer = 2254
+        target_val = 19690720
+
+        (noun, verb) = challenge.process_inputfile_findnounverb(
+            input_filename, target_val)
+        result = 100 * noun + verb
+        self.assertEqual(my_answer, result)
+
 
 if __name__ == '__main__':
     unittest.main()
