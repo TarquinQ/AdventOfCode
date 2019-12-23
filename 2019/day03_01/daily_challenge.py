@@ -4,11 +4,11 @@ from typing import List  # also: Dict, Tuple, Sequence
 from dataclasses import dataclass
 
 
-# def process_inputfile(filepath: str) -> int:
-#     list_strs = get_list_strs_csv(filepath)
-#     execute_Intcode_program(intcode_memspace=list_ints)
+def process_inputfile(filepath: str) -> int:
+    list_strs = get_list_strs_csv(filepath)
+    lowest_point = execute_wire_comparison(wire1_trace=list_strs[0], wire2_trace=list_strs[1])
 
-#     return list_ints[0]
+    return lowest_point
 
 
 def execute_wire_comparison(wire1_trace: List[str], wire2_trace: List[str]):
@@ -114,8 +114,10 @@ class WireTrail:
 
 
 def get_list_strs_csv(filepath: str) -> List[int]:
-    list_strs = []
+    list_wires = []
     with open(filepath) as f:
-        line = f.readline()
-        list_strs = [str(x) for x in line.split(',')]
-    return list_strs
+        for line in f.readlines():
+            list_strs = [str(x) for x in line.split(',')]
+            list_wires.append(list_strs)
+
+    return list_wires

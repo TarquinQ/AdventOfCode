@@ -26,12 +26,12 @@ class TestBasic(unittest.TestCase):
                 wire1_trace=wire1, wire2_trace=wire2)
             self.assertEqual(known_distance, closest_point.manhattan_distance())
 
-    # def test_challenge(self):
-    #     input_filename = "challenge_input.txt"
-    #     my_answer = 11590668
+    def test_challenge(self):
+        input_filename = "challenge_input.txt"
+        my_answer = 120
 
-    #     result = challenge.process_inputfile(input_filename)
-    #     self.assertEqual(my_answer, result)
+        closest_point = challenge.process_inputfile(input_filename)
+        self.assertEqual(my_answer, closest_point.manhattan_distance())
 
 
 if __name__ == '__main__':
