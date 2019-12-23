@@ -52,6 +52,7 @@ def is_pwd_valid_norange(pwd: Any) -> bool:
 
     return True
 
+
 @dataclass(frozen=True)
 class Range:
     start: int
