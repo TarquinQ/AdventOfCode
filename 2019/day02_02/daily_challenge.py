@@ -22,7 +22,6 @@ def process_inputfile_findnounverb(filepath: str, target_val: int) -> int:
                 return (noun, verb)
 
 
-
 def replace_noun_and_verb(list_ints: List[int], noun: int, verb: int) -> None:
     list_ints[1] = noun
     list_ints[2] = verb
