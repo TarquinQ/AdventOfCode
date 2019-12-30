@@ -32,7 +32,7 @@ class TestBasic(unittest.TestCase):
 
     def test_challenge(self):
         input_filename = "challenge_input.txt"
-        my_answer = 11590668
+        my_answer = 3
 
         result = challenge.process_inputfile(input_filename)
         self.assertEqual(my_answer, result)

@@ -33,8 +33,11 @@ def execute_Intcode_program(intcode_memspace: List[int]) -> List[int]:
             instruction_stream=intcode_memspace,
             code_pointer=instruction_ptr)
         print(f"New Instruction: {instruction}")
-        instruction.exec()
-        instruction_ptr += instruction.instruction_type.length
+        result = instruction.exec()
+        if instruction.instruction_type.jumps and result != -1:
+            instruction_ptr = result
+        else:
+            instruction_ptr += instruction.instruction_type.length
 
     return (intcode_memspace)
 
@@ -59,6 +62,7 @@ class InstructionType:
     operation: Callable[[Any], Any] = lambda *args: args
     saves: bool = True
     save_operand_position: int = -1  # position of saving operand
+    jumps: bool = False
 
     @staticmethod
     def get_opcode_from_raw(raw_code: int) -> int:
@@ -125,6 +129,14 @@ class InstructionTypes:
                         operation=(lambda: int(input("Enter Input: ")))),  # type: ignore
         InstructionType(name='output', opcode=4, length=2, saves=False,
                         operation=(lambda x: print(f"Output: {x}"))),
+        InstructionType(name='jump-if-true', opcode=5, length=3, saves=False, jumps=True,
+                        operation=lambda x: x[1] if (x[0] > 0) else -1),
+        InstructionType(name='jump-if-false', opcode=6, length=3, saves=False, jumps=True,
+                        operation=(lambda x: x[1] if (x[0] == 0) else -1)),
+        InstructionType(name='less-than', opcode=7, length=4,
+                        operation=(lambda x: int(x[0] < x[1]))),   # type: ignore
+        InstructionType(name='equals', opcode=8, length=4,
+                        operation=(lambda x: int(x[0] == x[1]))),  # type: ignore
     ]
     opcode_lookup = dict([(instr.opcode, instr) for instr in template_list])
 
