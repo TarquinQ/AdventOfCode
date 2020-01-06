@@ -27,10 +27,10 @@ class TestBasic(unittest.TestCase):
             calc_orbit_count = challenge.process_orbit_list(dependency_graph_descr)
             self.assertEqual(num_orbits, calc_orbit_count)
 
-    @unittest.skip("Ignore for now")
+    # @unittest.skip("Ignore for now")
     def test_challenge(self):
         input_filename = "challenge_input.txt"
-        my_answer = 314
+        my_answer = 139597
 
         result = challenge.process_inputfile(input_filename)
         self.assertEqual(my_answer, result)
