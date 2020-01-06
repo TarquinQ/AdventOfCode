@@ -7,12 +7,33 @@ from dataclasses import dataclass, field
 
 def process_inputfile(filepath: str) -> int:
     list_strs = get_list_strs_csv(filepath)
-    return process_orbit_list(list_strs)
+    return count_orbit_change(list_strs)
 
 
-def process_orbit_list(list_orbits: List[str]) -> int:
+def count_orbit_change(list_orbits: List[str],
+        move_node_name: str = 'YOU',
+        to_node_name: str = 'SAN') -> int:
     tree_lookup = build_orbit_tree(list_orbits)
-    return count_orbits(tree_lookup)
+    left_node_path = build_path_to_root(tree_lookup[move_node_name])
+    right_node_path = build_path_to_root(tree_lookup[to_node_name])
+    most_common_node_dist_from_root = 0
+    for i, node in enumerate(left_node_path):
+        if node == right_node_path[i]:
+            most_common_node_dist_from_root = i
+        else:
+            break
+
+    remaining_left = len(left_node_path) - most_common_node_dist_from_root - 1
+    remaining_right = len(right_node_path) - most_common_node_dist_from_root - 1
+    return remaining_left + remaining_right
+
+
+def build_path_to_root(node: Node) -> List[Node]:
+    path = []
+    while node.parent is not None:
+        path.append(node.parent)
+        node = node.parent
+    return list(reversed(path))
 
 
 @dataclass
