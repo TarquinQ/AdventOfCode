@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Advent2020.Models
 {
-    class SkierOnSlope
+    public class SkierOnSlope
     {
         public (int x, int y) CurrentPos { get; protected set; }
         public TreeSlope Slope { get; }
@@ -21,6 +21,12 @@ namespace Advent2020.Models
         public SkierOnSlope(TreeSlope slope)
         {
             this.Slope = slope;
+            this.Reset();
+        }
+
+        public SkierOnSlope()
+        {
+            this.Slope = new TreeSlope(0);
             this.CurrentPos = (0, 0);
             this.MarkTerrainAsVisited();
         }
@@ -34,6 +40,14 @@ namespace Advent2020.Models
             int new_x = (this.CurrentPos.x + vector.Move_x) % this.Slope.Width;
             int new_y = (this.CurrentPos.y + vector.Move_y);
             this.CurrentPos = (new_x, new_y);
+            this.MarkTerrainAsVisited();
+            return this;
+        }
+
+        public SkierOnSlope Reset()
+        {
+            this.CurrentPos = (0, 0);
+            this.Slope.Reset();
             this.MarkTerrainAsVisited();
             return this;
         }

@@ -10,9 +10,9 @@ namespace Advent2020
     {
         public static string AdventDay => "Day03";
         public static bool TestInputOnly => false;
-        public static bool RunChallenge2 => false;
+        public static bool RunChallenge2 => true;
 
-        public static LogLevel LogLevel = LogLevel.Debug;
+        public static LogLevel LogLevel => LogLevel.Debug;
         public static string ChallengeNumber => RunChallenge2 ? "02" : "01";
 
         public static string MainInputFileName => "input.txt";

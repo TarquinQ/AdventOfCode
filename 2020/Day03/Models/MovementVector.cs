@@ -18,5 +18,10 @@ namespace Advent2020.Models
             this.Move_x = x;
             this.Move_y = y;
         }
+
+        public override string ToString()
+        {
+            return String.Format("({0},{1})", this.Move_x, this.Move_y);
+        }
     }
 }

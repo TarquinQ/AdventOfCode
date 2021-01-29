@@ -38,16 +38,16 @@ namespace Advent2020
             var input = new FormattedInput(filepath);
             FormattedOutput.PrintInputs(HardCodedConfig.TestInputFilePath, input);
 
-            var results1 = new Solution1();
-            results1.Calc(input.TerrainFromInput, ExtraInput.MovementVector_Solution1_Test1);
+            var results1 = new Solution1(input.TerrainFromInput);
+            results1.Calc(ExtraInput.MovementVector_Solution1_Test1);
             this.FinalAnswers.SetAnswer(value: results1.Answer, isTestAnswer: isTest, isAnswer2: false);
             FormattedOutput.PrintResults(calcResults: results1, isTest: isTest);
 
             if (runSolution2)
             {
                 FormattedOutput.PrintPhase(phaseName: "Challenge 2", isTest: isTest);
-                var results2 = new Solution2();
-//                results2.Calc(input.TerrainFromInput);
+                var results2 = new Solution2(input.TerrainFromInput);
+                results2.Calc2(ExtraInput.MovementVectors_Solution2);
                 this.FinalAnswers.SetAnswer(value: results2.Answer, isTestAnswer: isTest, isAnswer2: true);
                 FormattedOutput.PrintResults(calcResults: results2, isTest: isTest);
             }

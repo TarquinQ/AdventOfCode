@@ -13,8 +13,8 @@ namespace Advent2020.Input
         {
             this.AnswerTest1 = 7;
             this.Answer1 = 240;
-            this.AnswerTest2 = 1;
-            this.Answer2 = 313;
+            this.AnswerTest2 = 336;
+            this.Answer2 = 2832009600;
         }
     }
 }

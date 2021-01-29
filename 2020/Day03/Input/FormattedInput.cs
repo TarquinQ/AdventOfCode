@@ -39,7 +39,7 @@ namespace Advent2020.Input
                     line.Select(lineChar => TerrainCharMapping.ConvertFrom(lineChar)).ToArray()
                 );
             }
-            this.TerrainFromInput = slope;
+            this.TerrainFromInput = slope.CompleteSetup();
             return this;
         }
     }

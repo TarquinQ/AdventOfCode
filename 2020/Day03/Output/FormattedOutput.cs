@@ -62,8 +62,7 @@ namespace Advent2020.Output
 
         public static void PrintResults(Solution1 calcResults, bool isTest = false)
         {
-            Solution2? results = calcResults as Solution2;
-            if (results is null)
+            if (calcResults is not Solution2 results)
             {
                 PrintResults1(calcResults, isTest);
             }
@@ -121,7 +120,7 @@ namespace Advent2020.Output
             }
         }
 
-        private static void PrintAnswer(int answer, int expected)
+        private static void PrintAnswer(long answer, long expected)
         {
             string message;
             ConsoleColor colour;
